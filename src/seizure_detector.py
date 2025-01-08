@@ -4,11 +4,12 @@ import time
 
 class SeizureDetector:
     def __init__(self):
-        self.read_frequency = 1/60
+        self.refresh_rate = 60
+        self.read_frequency = 1/self.refresh_rate
         self.dangerous_freq_min = 3   # Hz
         self.dangerous_freq_max = 30  # Hz
         self.frame_buffer = []
-        self.buffer_size = 30
+        self.buffer_size = self.refresh_rate
         self.intensity_change_thresh = 0.2,
         self.alert_cooldown = 10
         self.last_alert = 0
