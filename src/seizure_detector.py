@@ -10,7 +10,7 @@ class SeizureDetector:
         self.dangerous_freq_max = 30  # Hz
         self.frame_buffer = []
         self.buffer_size = self.refresh_rate
-        self.intensity_change_thresh = 0.2,
+        self.intensity_change_thresh = 0.4,
         self.alert_cooldown = 10
         self.last_alert = 0
         self.frame_timestamps = []
