@@ -32,7 +32,7 @@ def main():
                             threading.Thread(target=play_alert, daemon=True).start()
                             threading.Thread(target=show_alert, daemon=True).start()
 
-                            threading.Thread(target=close_active_window, daemon=True).start()
+                            threading.Thread(target=minimize_active_window, daemon=True).start()
                 
                 prev_gray = gray.copy()
                 del screen  

@@ -10,6 +10,7 @@ class SeizureDetector:
                  dangerous_freq_max=30, 
                  intensity_change_thresh=0.2, 
                  alert_cooldown=5,
+                 consecutive_threshold=5,
                  ):
 
         self.refresh_rate = refresh_rate
@@ -23,6 +24,8 @@ class SeizureDetector:
         self.last_alert = 0
         self.frame_timestamps = []
         self.last_frame_size = None
+        self.consecutive_threshold = consecutive_threshold
+        self.consecutive_danger_count = 0  
         
 
     def analyze_frequency(self):
@@ -60,7 +63,12 @@ class SeizureDetector:
             
             is_dangerous_freq = (self.dangerous_freq_min <= frequency <= self.dangerous_freq_max)
             
-            return is_dangerous_freq and intensity_change > self.intensity_change_thresh
+            if is_dangerous_freq:
+                self.consecutive_danger_count += 1  
+            else:
+                self.consecutive_danger_count = 0  
+            
+            return self.consecutive_danger_count >= self.consecutive_threshold  
             
         return False
     
