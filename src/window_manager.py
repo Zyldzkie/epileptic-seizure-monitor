@@ -14,7 +14,10 @@ def minimize_windows():
             except:
                 pass
 
-def grab_screen():
-    sct = mss.mss()
-    screen = np.array(sct.grab(sct.monitors[1]))
-    return screen
+def grab_screen(sct):
+    try:
+        screen = np.array(sct.grab(sct.monitors[1]))
+        return screen
+    except Exception as e:
+        print(f"Screen capture failed: {e}")
+        return None
