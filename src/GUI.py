@@ -25,6 +25,8 @@ def go_to_next_page():
         detector.dangerous_freq_max = float(dangerous_freq_max_entry.get())
         detector.intensity_change_thresh = float(intensity_change_thresh_entry.get())
         detector.alert_cooldown = int(alert_cooldown_entry.get())
+    
+        
 
     def go_back():
         settings_window.destroy()
@@ -66,7 +68,8 @@ def go_to_next_page():
     save_button = tk.Button(settings_window, text="Save", command=save_settings)
     save_button.pack()
 
-if __name__ == "__main__":
+def frontpage():
+    global root
     root = tk.Tk()
     root.geometry("1100x570")
     root.title("Epileptic Seizure Monitor")
@@ -85,7 +88,6 @@ if __name__ == "__main__":
     title_label.place(relx=0.07, rely=0.17, relwidth=0.4, relheight=0.1)
     
     description_label = tk.Label(root, text=description, wraplength=400, justify="left", bg="#f8d4fc", font=("Arial", 16), fg="#c700ff")
-
     description_label.place(relx=0.07, rely=0.27, relwidth=0.4, relheight=0.3)
 
     next_button = tk.Button(root, text="Get Started", command=go_to_next_page, bg="#c700ff", fg="white", font=("Arial", 16, "bold"))

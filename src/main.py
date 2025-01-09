@@ -1,7 +1,7 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
 from window_manager import minimize_windows
-from GUI import show_alert
+from GUI import show_alert, frontpage
 
 import cv2
 import numpy as np
@@ -13,6 +13,9 @@ import sys
 
 
 def main():
+    # Initialize and open the GUI
+    frontpage()
+    
     detector = SeizureDetector()
     sct = mss.mss()
     prev_gray = None
