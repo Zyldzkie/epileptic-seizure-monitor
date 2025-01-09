@@ -6,7 +6,7 @@ from seizure_detector import SeizureDetector
 def show_alert():
     root = tk.Tk()
     root.withdraw()
-    messagebox.showwarning("Warning", "Potential seizure-inducing content detected!")
+    messagebox.showwarning("Warning", "Potential seizure-inducing content detected! Minimized the offending window.")
     root.destroy()
 
 def go_to_next_page():

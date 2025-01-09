@@ -1,0 +1,5 @@
+# For macOS
+pip install pyobjc-framework-Quartz
+
+# For Windows
+pip install pygetwindow
