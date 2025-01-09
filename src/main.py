@@ -19,11 +19,7 @@ def main():
     
     while True:
         try:
-            if sys.platform == "darwin":  # macOS
-                screen = np.array(ImageGrab.grab())
-            else:  # Windows
-                screen = np.array(sct.grab(sct.monitors[1]))
-                
+            screen = np.array(sct.grab(sct.monitors[1]))
             gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
             
             if prev_gray is not None:
