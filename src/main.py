@@ -1,9 +1,8 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
 
-from GUI import show_alert, frontpage
+from GUI import SeizureMonitorApp  
 from window_manager import minimize_active_window, grab_screen, close_active_window
-
 
 import cv2
 import time
@@ -11,10 +10,8 @@ import threading
 import mss
 
 def main():
-
-    frontpage()
- 
-    detector = SeizureDetector(refresh_rate=180)
+    app = SeizureMonitorApp()
+    detector = app.detector
     prev_gray = None
     sct = None
     
@@ -35,7 +32,7 @@ def main():
                         if current_time - detector.last_alert >= detector.alert_cooldown:
                             detector.last_alert = current_time
                             threading.Thread(target=play_alert, daemon=True).start()
-                            threading.Thread(target=show_alert, daemon=True).start()
+                            threading.Thread(target=app.show_alert, daemon=True).start()
 
                             threading.Thread(target=minimize_active_window, daemon=True).start()
                 
