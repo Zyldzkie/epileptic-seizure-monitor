@@ -1,6 +1,8 @@
 import pygetwindow as gw
 import os
 import sys
+import mss
+import numpy as np
 
 def minimize_windows():
     if sys.platform == "darwin":  # macOS
@@ -11,3 +13,8 @@ def minimize_windows():
                 window.minimize()
             except:
                 pass
+
+def grab_screen():
+    sct = mss.mss()
+    screen = np.array(sct.grab(sct.monitors[1]))
+    return screen

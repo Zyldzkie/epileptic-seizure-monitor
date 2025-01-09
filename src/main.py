@@ -1,11 +1,10 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
-from window_manager import minimize_windows
+from window_manager import minimize_windows, grab_screen
 from GUI import show_alert
 
 import cv2
 import numpy as np
-import mss
 import time
 from PIL import ImageGrab
 import threading
@@ -14,13 +13,13 @@ import sys
 
 def main():
     detector = SeizureDetector(refresh_rate=180)
-    sct = mss.mss()
+   
     prev_gray = None
     
     while True:
         try:
-            screen = np.array(sct.grab(sct.monitors[1]))
-            gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+            
+            gray = cv2.cvtColor(grab_screen(), cv2.COLOR_BGR2GRAY)
             
             if prev_gray is not None:
                 if detector.calculate_risk_factors(prev_gray, gray):
