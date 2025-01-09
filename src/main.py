@@ -1,6 +1,6 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
-from window_manager import minimize_windows, grab_screen
+from window_manager import minimize_active_window, grab_screen, close_active_window
 from GUI import show_alert
 
 import cv2
@@ -31,7 +31,8 @@ def main():
                             detector.last_alert = current_time
                             threading.Thread(target=play_alert, daemon=True).start()
                             threading.Thread(target=show_alert, daemon=True).start()
-                            threading.Thread(target=minimize_windows, daemon=True).start()
+
+                            threading.Thread(target=close_active_window, daemon=True).start()
                 
                 prev_gray = gray.copy()
                 del screen  

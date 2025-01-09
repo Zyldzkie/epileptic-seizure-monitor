@@ -18,10 +18,11 @@ class SeizureDetector:
         self.dangerous_freq_max = dangerous_freq_max  # Hz
         self.frame_buffer = []
         self.buffer_size = self.refresh_rate
-        self.intensity_change_thresh = intensity_change_thresh,
+        self.intensity_change_thresh = intensity_change_thresh
         self.alert_cooldown = alert_cooldown
         self.last_alert = 0
         self.frame_timestamps = []
+        self.last_frame_size = None
         
 
     def analyze_frequency(self):
@@ -38,6 +39,13 @@ class SeizureDetector:
         
 
     def calculate_risk_factors(self, frame1, frame2):
+        if frame1 is None or frame2 is None:
+            return False
+            
+        # Check if frames have different sizes
+        if frame1.shape != frame2.shape:
+            return False
+            
         current_time = time.time()
         
         intensity_diff = cv2.absdiff(frame1, frame2)
@@ -55,3 +63,5 @@ class SeizureDetector:
             return is_dangerous_freq and intensity_change > self.intensity_change_thresh
             
         return False
+    
+    
