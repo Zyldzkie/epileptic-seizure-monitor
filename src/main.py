@@ -13,7 +13,7 @@ import sys
 
 
 def main():
-    detector = SeizureDetector()
+    detector = SeizureDetector(refresh_rate=180)
     sct = mss.mss()
     prev_gray = None
     
