@@ -1,7 +1,9 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
+
+from GUI import show_alert, frontpage
 from window_manager import minimize_active_window, grab_screen, close_active_window
-from GUI import show_alert
+
 
 import cv2
 import time
@@ -9,6 +11,9 @@ import threading
 import mss
 
 def main():
+
+    frontpage()
+ 
     detector = SeizureDetector(refresh_rate=180)
     prev_gray = None
     sct = None
