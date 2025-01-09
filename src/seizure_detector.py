@@ -41,7 +41,7 @@ class SeizureDetector:
         return np.mean(time_diffs) if time_diffs else 0
         
 
-    def calculate_risk_factors(self, frame1, frame2):
+    def is_seizure_probable(self, frame1, frame2):
         if frame1 is None or frame2 is None:
             return False
             
@@ -63,8 +63,10 @@ class SeizureDetector:
             
             is_dangerous_freq = (self.dangerous_freq_min <= frequency <= self.dangerous_freq_max)
             
+        
             if is_dangerous_freq:
                 self.consecutive_danger_count += 1  
+            # Move this out maybe?????
             else:
                 self.consecutive_danger_count = 0  
             

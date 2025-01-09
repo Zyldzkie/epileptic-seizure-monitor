@@ -12,7 +12,7 @@ import mss
 
 def main():
 
-    frontpage()
+    #frontpage()
  
     detector = SeizureDetector(refresh_rate=180)
     prev_gray = None
@@ -30,7 +30,7 @@ def main():
                 gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
                 
                 if prev_gray is not None:
-                    if detector.calculate_risk_factors(prev_gray, gray):
+                    if detector.is_seizure_probable(prev_gray, gray):
                         current_time = time.time()
                         if current_time - detector.last_alert >= detector.alert_cooldown:
                             detector.last_alert = current_time
