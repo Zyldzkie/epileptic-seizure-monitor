@@ -12,7 +12,7 @@ class SeizureMonitorApp:
     def __init__(self):
         
         self.root = tk.Tk()
-        self.root.geometry("1100x570")
+        self.root.geometry("850x400")
         self.root.title("Epileptic Seizure Monitor")
         self.detector = SeizureDetector()
 
@@ -23,40 +23,22 @@ class SeizureMonitorApp:
         self.setup_frontpage()
 
     def setup_frontpage(self):
-        
-        try:
-            bg_image = Image.open("src/static/bg.png")
-            bg_photo = ImageTk.PhotoImage(bg_image)
-        except Exception as e:
-            messagebox.showerror("Error", f"Failed to load background image: {e}")
-            bg_photo = None
+        self.root.configure(bg="#2e2e2e")  # Set background color to dark
 
-        if bg_photo:
-            bg_label = tk.Label(self.root, image=bg_photo)
-            bg_label.place(relwidth=1, relheight=1)
-            # Keep a reference to avoid garbage collection
-            bg_label.image = bg_photo
+        title = "Welcome to EpilepSafe"
+        description = ("Empowering individuals with epilepsy with a tool designed to enhance safety, promote awareness, and foster a better quality of life. Experience peace of mind through innovative features tailored to meet your unique needs.")
 
-        title = "Welcome to VisualEase"
-        description = ("The ultimate companion for individuals with epilepsy and their caregivers, "
-                       "designed to promote safety, awareness, and a better quality of life.")
+        title_label = tk.Label(self.root, text=title, wraplength=400, justify="left", bg="#2e2e2e", font=("Arial", 24, "bold"), fg="#ffffff")
+        title_label.place(relx=0.02, rely=0.20, relwidth=0.5, relheight=0.1)
 
-        title_label = tk.Label(self.root, text=title, wraplength=400, justify="left", bg="#f8d4fc", font=("Arial", 24, "bold"), fg="#c700ff")
-        title_label.place(relx=0.07, rely=0.17, relwidth=0.4, relheight=0.1)
+        description_label = tk.Label(self.root, text=description, wraplength=400, justify="left", bg="#2e2e2e", font=("Arial", 16), fg="#ffffff")
+        description_label.place(relx=0.01, rely=0.30, relwidth=0.55, relheight=0.5)
 
-        description_label = tk.Label(self.root, text=description, wraplength=400, justify="left", bg="#f8d4fc", font=("Arial", 16), fg="#c700ff")
-        description_label.place(relx=0.07, rely=0.27, relwidth=0.4, relheight=0.3)
+        self.setup_settings()
 
-        next_button = tk.Button(self.root, text="Get Started", command=self.go_to_next_page, bg="#c700ff", fg="white", font=("Arial", 16, "bold"))
-        next_button.place(relx=0.20, relwidth=0.13, relheight=0.07, rely=0.65)
-
-    def go_to_next_page(self):
-        
-        self.root.withdraw()  # Hide the first page
-
-        settings_window = tk.Toplevel(self.root)
-        settings_window.geometry("800x400")
-        settings_window.title("Seizure Detector Settings")
+    def setup_settings(self):
+        settings_frame = tk.Frame(self.root, bg="#2e2e2e")
+        settings_frame.place(relx=0.55, rely=0.17, relwidth=0.4, relheight=0.6)
 
         def save_settings():
             try:
@@ -70,44 +52,37 @@ class SeizureMonitorApp:
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
 
-        def go_back():
-            settings_window.destroy()
-            self.root.deiconify()  # Show the first page again
-
-        back_button = tk.Button(settings_window, text="Back", command=go_back, bg="#c700ff", fg="white", font=("Arial", 12, "bold"))
-        back_button.pack(anchor="nw", padx=10, pady=10)
-
-        tk.Label(settings_window, text="Refresh Rate:").pack()
-        refresh_rate_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Refresh Rate:", bg="#2e2e2e", fg="#ffffff").pack()
+        refresh_rate_entry = tk.Entry(settings_frame)
         refresh_rate_entry.insert(0, str(self.detector.refresh_rate))
         refresh_rate_entry.pack()
 
-        tk.Label(settings_window, text="Read Frequency:").pack()
-        read_frequency_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Read Frequency:", bg="#2e2e2e", fg="#ffffff").pack()
+        read_frequency_entry = tk.Entry(settings_frame)
         read_frequency_entry.insert(0, str(self.detector.read_frequency))
         read_frequency_entry.pack()
 
-        tk.Label(settings_window, text="Dangerous Frequency Min:").pack()
-        dangerous_freq_min_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Dangerous Frequency Min:", bg="#2e2e2e", fg="#ffffff").pack()
+        dangerous_freq_min_entry = tk.Entry(settings_frame)
         dangerous_freq_min_entry.insert(0, str(self.detector.dangerous_freq_min))
         dangerous_freq_min_entry.pack()
 
-        tk.Label(settings_window, text="Dangerous Frequency Max:").pack()
-        dangerous_freq_max_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Dangerous Frequency Max:", bg="#2e2e2e", fg="#ffffff").pack()
+        dangerous_freq_max_entry = tk.Entry(settings_frame)
         dangerous_freq_max_entry.insert(0, str(self.detector.dangerous_freq_max))
         dangerous_freq_max_entry.pack()
 
-        tk.Label(settings_window, text="Intensity Change Threshold:").pack()
-        intensity_change_thresh_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Intensity Change Threshold:", bg="#2e2e2e", fg="#ffffff").pack()
+        intensity_change_thresh_entry = tk.Entry(settings_frame)
         intensity_change_thresh_entry.insert(0, str(self.detector.intensity_change_thresh))
         intensity_change_thresh_entry.pack()
 
-        tk.Label(settings_window, text="Alert Cooldown:").pack()
-        alert_cooldown_entry = tk.Entry(settings_window)
+        tk.Label(settings_frame, text="Alert Cooldown:", bg="#2e2e2e", fg="#ffffff").pack()
+        alert_cooldown_entry = tk.Entry(settings_frame)
         alert_cooldown_entry.insert(0, str(self.detector.alert_cooldown))
         alert_cooldown_entry.pack()
 
-        save_button = tk.Button(settings_window, text="Save", command=save_settings, bg="#c700ff", fg="white", font=("Arial", 12, "bold"))
+        save_button = tk.Button(settings_frame, text="Save", command=save_settings, bg="#4a4a4a", fg="#ffffff", font=("Arial", 12, "bold"))
         save_button.pack()
 
     def run_detection(self):
