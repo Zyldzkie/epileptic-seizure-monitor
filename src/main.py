@@ -30,13 +30,15 @@ class ApplicationLogic:
                         current_time = time.time()
                         if current_time - self.detector.last_alert >= self.detector.alert_cooldown:
                             self.detector.last_alert = current_time
-                            threading.Thread(target=play_alert, daemon=True).start()
+                            
                             threading.Thread(target=self.gui.show_alert, daemon=True).start()
                             
                             if self.detector.window_trigger_behavior == "minimize":
                                 threading.Thread(target=minimize_active_window, daemon=True).start()
                             else:  # close
                                 threading.Thread(target=close_active_window, daemon=True).start()
+
+                            threading.Thread(target=play_alert, daemon=True).start()
                 
                 self.prev_gray = gray.copy()
                 del screen
