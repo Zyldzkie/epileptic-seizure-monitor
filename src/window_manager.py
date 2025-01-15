@@ -13,31 +13,32 @@ def grab_screen(sct):
         if sys.platform == "darwin":
             workspace = NSWorkspace.sharedWorkspace()
             active_app = workspace.activeApplication()
-            if active_app:
-                screen = NSScreen.mainScreen()
-                frame = screen.frame()
-                monitor = {
-                    "top": int(frame.origin.y),
-                    "left": int(frame.origin.x),
-                    "width": int(frame.size.width),
-                    "height": int(frame.size.height),
-                    "mon": 1,
-                }
-                screen = np.array(sct.grab(monitor))
-                return screen
+            if not active_app:
+                return None
+                
+            screen = NSScreen.mainScreen()
+            frame = screen.frame()
+            monitor = {
+                "top": int(frame.origin.y),
+                "left": int(frame.origin.x),
+                "width": int(frame.size.width),
+                "height": int(frame.size.height),
+                "mon": 1,
+            }
         else:
             active_window = gw.getActiveWindow()
-            if active_window and active_window.title:
-                monitor = {
-                    "top": active_window.top,
-                    "left": active_window.left,
-                    "width": active_window.width,
-                    "height": active_window.height,
-                    "mon": 1,
-                }
-                screen = np.array(sct.grab(monitor))
-                return screen
-        return None
+            if not active_window or not active_window.title:
+                return None
+                
+            monitor = {
+                "top": active_window.top,
+                "left": active_window.left,
+                "width": active_window.width,
+                "height": active_window.height,
+                "mon": 1,
+            }
+            
+        return np.array(sct.grab(monitor))
     except Exception as e:
         print(f"Screen capture failed: {e}")
         return None
