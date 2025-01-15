@@ -10,7 +10,7 @@ class SeizureDetector:
                  dangerous_freq_max=30, 
                  intensity_change_thresh=0.2, 
                  alert_cooldown=5,
-                 consecutive_threshold=5,
+                 consecutive_threshold=3,
                  ):
 
         self.refresh_rate = refresh_rate
