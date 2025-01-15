@@ -145,6 +145,7 @@ class GUI:
                 self.detector.dangerous_freq_max = float(dangerous_freq_max_spinbox.get())
                 self.detector.intensity_change_thresh = float(intensity_change_thresh_spinbox.get())
                 self.detector.alert_cooldown = int(alert_cooldown_spinbox.get())
+                self.detector.window_trigger_behavior = window_behavior_var.get()
                 messagebox.showinfo("Settings Saved", "Settings have been successfully updated.")
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
@@ -191,6 +192,12 @@ class GUI:
         alert_cooldown_spinbox.configure(bg=self.theme["spinbox_bg"], fg=self.theme["spinbox_fg"])
         alert_cooldown_spinbox.pack()
 
+        tk.Label(settings_frame, text="Window Behavior:", bg=self.theme["bg"], fg=self.theme["fg"]).pack()
+        window_behavior_var = tk.StringVar(value=self.detector.window_trigger_behavior)
+        window_behavior_dropdown = tk.OptionMenu(settings_frame, window_behavior_var, "minimize", "close")
+        window_behavior_dropdown.configure(bg=self.theme["button_bg"], fg=self.theme["button_fg"])
+        window_behavior_dropdown.pack()
+
         save_button = tk.Button(
             settings_frame,
             text="Save",
@@ -202,8 +209,17 @@ class GUI:
         save_button.pack(pady=10)
 
     def show_alert(self):
+
+        message = ""
+
+        if self.detector.window_trigger_behavior == "minimize":
+            message = "Content minimized."
+
+        elif self.detector.window_trigger_behavior == "close":
+            message = "Content closed."
+
         self.root.after(0, lambda: messagebox.showwarning(
-            "Warning", "Potential seizure-inducing content detected!"
+            "Warning", f"Potential seizure-inducing content detected! \n{message}"
         ))
 
     def run(self):

@@ -11,6 +11,7 @@ class SeizureDetector:
                  intensity_change_thresh=0.2, 
                  alert_cooldown=5,
                  consecutive_threshold=3,
+                 window_trigger_behavior="minimize"
                  ):
 
         self.refresh_rate = refresh_rate
@@ -26,6 +27,8 @@ class SeizureDetector:
         self.last_frame_size = None
         self.consecutive_threshold = consecutive_threshold
         self.consecutive_danger_count = 0  
+
+        self.window_trigger_behavior = window_trigger_behavior
         
 
     def analyze_frequency(self):

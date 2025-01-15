@@ -1,6 +1,6 @@
 from seizure_detector import SeizureDetector
 from play_sound import play_alert
-from window_manager import minimize_active_window, grab_screen
+from window_manager import minimize_active_window, close_active_window, grab_screen
 from GUI import GUI
 import cv2
 import time
@@ -32,7 +32,11 @@ class ApplicationLogic:
                             self.detector.last_alert = current_time
                             threading.Thread(target=play_alert, daemon=True).start()
                             threading.Thread(target=self.gui.show_alert, daemon=True).start()
-                            threading.Thread(target=minimize_active_window, daemon=True).start()
+                            
+                            if self.detector.window_trigger_behavior == "minimize":
+                                threading.Thread(target=minimize_active_window, daemon=True).start()
+                            else:  # close
+                                threading.Thread(target=close_active_window, daemon=True).start()
                 
                 self.prev_gray = gray.copy()
                 del screen
