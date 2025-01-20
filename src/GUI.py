@@ -6,8 +6,11 @@ class GUI:
         self.detector = detector
         self.logic = logic
         self.root = tk.Tk()
-        self.root.geometry("850x450")
+        self.root.geometry("900x450")
         self.root.title("Epileptic Seizure Monitor")
+
+        # Disable maximize button
+        self.root.resizable(False, False)
 
         # Load Azure theme
         self.root.tk.call("source", "azure.tcl")
@@ -81,7 +84,7 @@ class GUI:
             try:
                 self.detector.dangerous_freq_min = float(dangerous_freq_min_spinbox.get())
                 self.detector.dangerous_freq_max = float(dangerous_freq_max_spinbox.get())
-                self.detector.intensity_change_thresh = float(intensity_change_thresh_spinbox.get())
+                self.detector.intensity_change_thresh = float(intensity_change_thresh_spinbox.get()) / 100
                 self.detector.consecutive_threshold = int(consecutive_threshold_spinbox.get())
                 self.detector.alert_cooldown = int(alert_cooldown_spinbox.get())
                 self.detector.window_trigger_behavior = window_behavior_var.get()
@@ -104,10 +107,10 @@ class GUI:
         dangerous_freq_max_spinbox.insert(0, str(self.detector.dangerous_freq_max))
         dangerous_freq_max_spinbox.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_grid, text="Intensity Change Threshold:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
-        intensity_change_thresh_spinbox = ttk.Spinbox(settings_grid, from_=0, to=1, increment=0.01)
+        ttk.Label(settings_grid, text="Intensity Change Threshold (%):").grid(row=2, column=0, padx=5, pady=5, sticky="w")
+        intensity_change_thresh_spinbox = ttk.Spinbox(settings_grid, from_=0, to=100, increment=1)
         intensity_change_thresh_spinbox.delete(0, "end")
-        intensity_change_thresh_spinbox.insert(0, str(self.detector.intensity_change_thresh))
+        intensity_change_thresh_spinbox.insert(0, str(int(self.detector.intensity_change_thresh * 100)))
         intensity_change_thresh_spinbox.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
         ttk.Label(settings_grid, text="Consecutive Threshold:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
