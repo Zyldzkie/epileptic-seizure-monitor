@@ -75,7 +75,7 @@ class GUI:
 
     def setup_settings(self):
         settings_frame = ttk.Frame(self.root)
-        settings_frame.place(relx=0.54, rely=0.15, relwidth=0.20, relheight=1)
+        settings_frame.place(relx=0.54, rely=0.15, relwidth=0.40, relheight=1)
 
         def save_settings():
             try:
@@ -89,43 +89,46 @@ class GUI:
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
 
-        ttk.Label(settings_frame, text="Dangerous Frequency Min:").pack()
-        dangerous_freq_min_spinbox = ttk.Spinbox(settings_frame, from_=0, to=100, increment=0.1)
+        settings_grid = ttk.Frame(settings_frame)
+        settings_grid.pack(expand=True, fill="both")
+
+        ttk.Label(settings_grid, text="Dangerous Frequency Min:").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+        dangerous_freq_min_spinbox = ttk.Spinbox(settings_grid, from_=0, to=100, increment=0.1)
         dangerous_freq_min_spinbox.delete(0, "end")
         dangerous_freq_min_spinbox.insert(0, str(self.detector.dangerous_freq_min))
-        dangerous_freq_min_spinbox.pack()
+        dangerous_freq_min_spinbox.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_frame, text="Dangerous Frequency Max:").pack()
-        dangerous_freq_max_spinbox = ttk.Spinbox(settings_frame, from_=0, to=100, increment=0.1)
+        ttk.Label(settings_grid, text="Dangerous Frequency Max:").grid(row=1, column=0, padx=5, pady=5, sticky="w")
+        dangerous_freq_max_spinbox = ttk.Spinbox(settings_grid, from_=0, to=100, increment=0.1)
         dangerous_freq_max_spinbox.delete(0, "end")
         dangerous_freq_max_spinbox.insert(0, str(self.detector.dangerous_freq_max))
-        dangerous_freq_max_spinbox.pack()
+        dangerous_freq_max_spinbox.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_frame, text="Intensity Change Threshold:").pack()
-        intensity_change_thresh_spinbox = ttk.Spinbox(settings_frame, from_=0, to=1, increment=0.01)
+        ttk.Label(settings_grid, text="Intensity Change Threshold:").grid(row=2, column=0, padx=5, pady=5, sticky="w")
+        intensity_change_thresh_spinbox = ttk.Spinbox(settings_grid, from_=0, to=1, increment=0.01)
         intensity_change_thresh_spinbox.delete(0, "end")
         intensity_change_thresh_spinbox.insert(0, str(self.detector.intensity_change_thresh))
-        intensity_change_thresh_spinbox.pack()
+        intensity_change_thresh_spinbox.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_frame, text="Consecutive Threshold:").pack()
-        consecutive_threshold_spinbox = ttk.Spinbox(settings_frame, from_=1, to=10, increment=1)
+        ttk.Label(settings_grid, text="Consecutive Threshold:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
+        consecutive_threshold_spinbox = ttk.Spinbox(settings_grid, from_=1, to=10, increment=1)
         consecutive_threshold_spinbox.delete(0, "end")
         consecutive_threshold_spinbox.insert(0, str(self.detector.consecutive_threshold))
-        consecutive_threshold_spinbox.pack()
+        consecutive_threshold_spinbox.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_frame, text="Alert Cooldown:").pack()
-        alert_cooldown_spinbox = ttk.Spinbox(settings_frame, from_=1, to=60, increment=1)
+        ttk.Label(settings_grid, text="Alert Cooldown:").grid(row=4, column=0, padx=5, pady=5, sticky="w")
+        alert_cooldown_spinbox = ttk.Spinbox(settings_grid, from_=1, to=60, increment=1)
         alert_cooldown_spinbox.delete(0, "end")
         alert_cooldown_spinbox.insert(0, str(self.detector.alert_cooldown))
-        alert_cooldown_spinbox.pack()
+        alert_cooldown_spinbox.grid(row=4, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(settings_frame, text="Window Behavior:").pack()
+        ttk.Label(settings_grid, text="Window Behavior:").grid(row=5, column=0, padx=5, pady=5, sticky="w")
         window_behavior_var = tk.StringVar(value=self.detector.window_trigger_behavior)
-        window_behavior_dropdown = ttk.OptionMenu(settings_frame, window_behavior_var, "minimize", "close", "minimize")
-        window_behavior_dropdown.pack()
+        window_behavior_dropdown = ttk.OptionMenu(settings_grid, window_behavior_var, "minimize", "close", "minimize")
+        window_behavior_dropdown.grid(row=5, column=1, padx=5, pady=5, sticky="w")
 
-        save_button = ttk.Button(settings_frame, text="Save", command=save_settings)
-        save_button.pack(pady=10)
+        save_button = ttk.Button(settings_grid, text="Save", command=save_settings)
+        save_button.grid(row=6, column=0, columnspan=2, pady=10)
 
     def show_alert(self):
         message = ""
