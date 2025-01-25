@@ -2,10 +2,10 @@ import os
 import sys
 from pygame import mixer
 
-def play_alert():
+def play_alert(play_sound_path):
     try:
         mixer.init()
-        alert_file = os.path.join(os.path.dirname(__file__), '..', 'assets', 'alert.mp3')
+        alert_file = play_sound_path
         alert_file = os.path.abspath(alert_file)
         mixer.music.load(alert_file)
         mixer.music.play()
