@@ -38,7 +38,7 @@ class ApplicationLogic:
                             else:  # close
                                 threading.Thread(target=close_active_window, daemon=True).start()
 
-                            threading.Thread(target=play_alert, daemon=True).start()
+                            threading.Thread(target=play_alert(self.detector.play_sound_path), daemon=True).start()
                 
                 self.prev_gray = gray.copy()
                 del screen

@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import time
+import os
 
 class SeizureDetector:
 
@@ -11,7 +12,8 @@ class SeizureDetector:
                  intensity_change_thresh=0.2, 
                  alert_cooldown=5,
                  consecutive_threshold=3,
-                 window_trigger_behavior="minimize"
+                 window_trigger_behavior="minimize",
+                 play_sound_path=None  # Default to None
                  ):
 
         self.refresh_rate = refresh_rate
@@ -30,6 +32,15 @@ class SeizureDetector:
 
         self.window_trigger_behavior = window_trigger_behavior
         
+        # Load sound path from file if not provided
+        if play_sound_path is None:
+            try:
+                with open('sound_path.txt', 'r') as f:
+                    self.play_sound_path = f.read().strip()
+            except FileNotFoundError:
+                self.play_sound_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'alert.mp3')  # Default path
+        else:
+            self.play_sound_path = play_sound_path
 
     def analyze_frequency(self):
         if len(self.frame_timestamps) < 2:
