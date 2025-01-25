@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, filedialog
 
 class GUI:
     def __init__(self, detector, logic):
@@ -9,8 +9,8 @@ class GUI:
         self.root.geometry("900x450")
         self.root.title("Epileptic Seizure Monitor")
 
-        # Disable maximize button
-        self.root.resizable(False, False)
+        # # Disable maximize button
+        # self.root.resizable(False, False)
 
         # Load Azure theme
         self.root.tk.call("source", "azure.tcl")
@@ -88,6 +88,9 @@ class GUI:
                 self.detector.consecutive_threshold = int(consecutive_threshold_spinbox.get())
                 self.detector.alert_cooldown = int(alert_cooldown_spinbox.get())
                 self.detector.window_trigger_behavior = window_behavior_var.get()
+                self.detector.play_sound_path = sound_path_var.get()
+                with open('sound_path.txt', 'w') as f:
+                    f.write(self.detector.play_sound_path)
                 messagebox.showinfo("Settings Saved", "Settings have been successfully updated.")
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
@@ -130,8 +133,22 @@ class GUI:
         window_behavior_dropdown = ttk.OptionMenu(settings_grid, window_behavior_var, "minimize", "close", "minimize")
         window_behavior_dropdown.grid(row=5, column=1, padx=5, pady=5, sticky="w")
 
+        # Add sound alert selection
+        ttk.Label(settings_grid, text="Sound Alert:").grid(row=6, column=0, padx=5, pady=5, sticky="w")
+        sound_path_var = tk.StringVar(value=self.detector.play_sound_path)
+        sound_path_entry = ttk.Entry(settings_grid, textvariable=sound_path_var, width=40)
+        sound_path_entry.grid(row=6, column=1, padx=5, pady=5, sticky="w")
+
+        def browse_sound_file():
+            file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.mp3;*.wav")])
+            if file_path:
+                sound_path_var.set(file_path)
+
+        browse_button = ttk.Button(settings_grid, text="Browse", command=browse_sound_file)
+        browse_button.grid(row=6, column=2, padx=5, pady=5)
+
         save_button = ttk.Button(settings_grid, text="Save", command=save_settings)
-        save_button.grid(row=6, column=0, columnspan=2, pady=10)
+        save_button.grid(row=7, column=0, columnspan=3, pady=10)
 
     def show_alert(self):
         message = ""
