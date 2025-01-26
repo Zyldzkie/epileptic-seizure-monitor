@@ -35,10 +35,10 @@ class ApplicationLogic:
                             
                             if self.detector.window_trigger_behavior == "minimize":
                                 threading.Thread(target=minimize_active_window, daemon=True).start()
-                            else:  # close
+                            else:  
                                 threading.Thread(target=close_active_window, daemon=True).start()
 
-                            threading.Thread(target=play_alert(self.detector.play_sound_path), daemon=True).start()
+                            threading.Thread(target=play_alert, args=(self.detector.play_sound_path,), daemon=True).start()
                 
                 self.prev_gray = gray.copy()
                 del screen
