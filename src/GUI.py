@@ -1,22 +1,25 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
+import pygame  # Add this import for playing sound
 
 class GUI:
     def __init__(self, detector, logic):
         self.detector = detector
         self.logic = logic
         self.root = tk.Tk()
-        self.root.geometry("900x450")
+        self.root.geometry("950x450")
         self.root.title("Epileptic Seizure Monitor")
 
-        # # Disable maximize button
-        # self.root.resizable(False, False)
+        # Disable maximize button
+        self.root.resizable(False, False)
 
         # Load Azure theme
         self.root.tk.call("source", "azure.tcl")
         self.root.tk.call("set_theme", "dark")  # Default to dark mode
 
         self.is_dark_mode = True
+
+        pygame.mixer.init()  # Initialize the mixer module
 
         self.setup_frontpage()
 
@@ -78,7 +81,7 @@ class GUI:
 
     def setup_settings(self):
         settings_frame = ttk.Frame(self.root)
-        settings_frame.place(relx=0.54, rely=0.15, relwidth=0.40, relheight=1)
+        settings_frame.place(relx=0.50, rely=0.15, relwidth=0.50, relheight=1)
 
         def save_settings():
             try:
@@ -94,6 +97,11 @@ class GUI:
                 messagebox.showinfo("Settings Saved", "Settings have been successfully updated.")
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
+
+        def preview_sound():
+            sound_path = sound_options[sound_path_var.get()]
+            pygame.mixer.music.load(sound_path)
+            pygame.mixer.music.play()
 
         settings_grid = ttk.Frame(settings_frame)
         settings_grid.pack(expand=True, fill="both")
@@ -147,6 +155,9 @@ class GUI:
         }
         sound_path_dropdown = ttk.OptionMenu(settings_grid, sound_path_var, *sound_options.keys())
         sound_path_dropdown.grid(row=6, column=1, padx=5, pady=5, sticky="w")
+
+        preview_button = ttk.Button(settings_grid, text="Preview", command=preview_sound)
+        preview_button.grid(row=6, column=1, padx=140, pady=5, sticky="w")
 
         save_button = ttk.Button(settings_grid, text="Save", command=save_settings)
         save_button.grid(row=7, column=0, columnspan=3, pady=10)
