@@ -138,9 +138,12 @@ class GUI:
         sound_path_var = tk.StringVar(value=self.detector.play_sound_path)
         
         sound_options = {
-            "AI-Speech": "./assets/AIspeech.mp3",
-            "AI Speech": "./assets/AIspeech.mp3",
-            "Alert Sound": "./assets/alert.mp3"
+            "AI-speech Mike": "./assets/AI-speech-Mike.mp3",
+            "AI speech Mike": "./assets/AI-speech-Mike.mp3",
+            "AI speech Cora": "./assets/AI-speech-Cora.mp3",
+            "Alarm Sound 1": "./assets/Alarm.mp3",
+            "Alarm Sound 2": "./assets/alert1.mp3",
+            "Alarm Sound 3": "./assets/alert2.mp3"
         }
         sound_path_dropdown = ttk.OptionMenu(settings_grid, sound_path_var, *sound_options.keys())
         sound_path_dropdown.grid(row=6, column=1, padx=5, pady=5, sticky="w")
