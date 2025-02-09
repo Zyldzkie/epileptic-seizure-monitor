@@ -125,7 +125,7 @@ class GUI:
         intensity_change_thresh_spinbox.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
         ttk.Label(settings_grid, text="Consecutive Threshold:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
-        consecutive_threshold_spinbox = ttk.Spinbox(settings_grid, from_=1, to=10, increment=1)
+        consecutive_threshold_spinbox = ttk.Spinbox(settings_grid, from_=1, to=100, increment=1)
         consecutive_threshold_spinbox.delete(0, "end")
         consecutive_threshold_spinbox.insert(0, str(self.detector.consecutive_threshold))
         consecutive_threshold_spinbox.grid(row=3, column=1, padx=5, pady=5, sticky="w")
