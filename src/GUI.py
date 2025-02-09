@@ -149,9 +149,14 @@ class GUI:
             "AI-speech Mike": "./assets/AI-speech-Mike.mp3",
             "AI speech Mike": "./assets/AI-speech-Mike.mp3",
             "AI speech Cora": "./assets/AI-speech-Cora.mp3",
-            "Alarm Sound 1": "./assets/Alarm.mp3",
-            "Alarm Sound 2": "./assets/alert1.mp3",
-            "Alarm Sound 3": "./assets/alert2.mp3"
+            "Alarm Sound": "./assets/alert2.mp3",
+            "Notification 1": "./assets/softalert1.mp3",
+            "Notification 2": "./assets/softalert2.mp3",
+            "Notification 3": "./assets/softalert3.mp3",
+            "Notification 4": "./assets/softalert4.mp3",
+            "Announcement 1": "./assets/Attention1.mp3",
+            "Announcement 2": "./assets/Attention2.mp3"
+
         }
         sound_path_dropdown = ttk.OptionMenu(settings_grid, sound_path_var, *sound_options.keys())
         sound_path_dropdown.grid(row=6, column=1, padx=5, pady=5, sticky="w")
