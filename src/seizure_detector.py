@@ -11,7 +11,7 @@ class SeizureDetector:
                  dangerous_freq_max=30, 
                  intensity_change_thresh=0.2, 
                  alert_cooldown=5,
-                 consecutive_threshold=3,
+                 consecutive_threshold=15,
                  window_trigger_behavior="minimize",
                  play_sound_path=None  # Default to None
                  ):

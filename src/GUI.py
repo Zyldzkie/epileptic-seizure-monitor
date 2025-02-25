@@ -1,22 +1,25 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
+import pygame  # Add this import for playing sound
 
 class GUI:
     def __init__(self, detector, logic):
         self.detector = detector
         self.logic = logic
         self.root = tk.Tk()
-        self.root.geometry("900x450")
+        self.root.geometry("950x450")
         self.root.title("Epileptic Seizure Monitor")
 
-        # # Disable maximize button
-        # self.root.resizable(False, False)
+        # Disable maximize button
+        self.root.resizable(False, False)
 
         # Load Azure theme
         self.root.tk.call("source", "azure.tcl")
         self.root.tk.call("set_theme", "dark")  # Default to dark mode
 
         self.is_dark_mode = True
+
+        pygame.mixer.init()  # Initialize the mixer module
 
         self.setup_frontpage()
 
@@ -78,7 +81,7 @@ class GUI:
 
     def setup_settings(self):
         settings_frame = ttk.Frame(self.root)
-        settings_frame.place(relx=0.54, rely=0.15, relwidth=0.40, relheight=1)
+        settings_frame.place(relx=0.50, rely=0.15, relwidth=0.50, relheight=1)
 
         def save_settings():
             try:
@@ -88,12 +91,17 @@ class GUI:
                 self.detector.consecutive_threshold = int(consecutive_threshold_spinbox.get())
                 self.detector.alert_cooldown = int(alert_cooldown_spinbox.get())
                 self.detector.window_trigger_behavior = window_behavior_var.get()
-                self.detector.play_sound_path = sound_path_var.get()
+                self.detector.play_sound_path = sound_options[sound_path_var.get()]
                 with open('sound_path.txt', 'w') as f:
                     f.write(self.detector.play_sound_path)
                 messagebox.showinfo("Settings Saved", "Settings have been successfully updated.")
             except ValueError:
                 messagebox.showerror("Invalid Input", "Please enter valid numbers for all settings.")
+
+        def preview_sound():
+            sound_path = sound_options[sound_path_var.get()]
+            pygame.mixer.music.load(sound_path)
+            pygame.mixer.music.play()
 
         settings_grid = ttk.Frame(settings_frame)
         settings_grid.pack(expand=True, fill="both")
@@ -117,7 +125,7 @@ class GUI:
         intensity_change_thresh_spinbox.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
         ttk.Label(settings_grid, text="Consecutive Threshold:").grid(row=3, column=0, padx=5, pady=5, sticky="w")
-        consecutive_threshold_spinbox = ttk.Spinbox(settings_grid, from_=1, to=10, increment=1)
+        consecutive_threshold_spinbox = ttk.Spinbox(settings_grid, from_=1, to=100, increment=1)
         consecutive_threshold_spinbox.delete(0, "end")
         consecutive_threshold_spinbox.insert(0, str(self.detector.consecutive_threshold))
         consecutive_threshold_spinbox.grid(row=3, column=1, padx=5, pady=5, sticky="w")
@@ -133,19 +141,28 @@ class GUI:
         window_behavior_dropdown = ttk.OptionMenu(settings_grid, window_behavior_var, "minimize", "close", "minimize")
         window_behavior_dropdown.grid(row=5, column=1, padx=5, pady=5, sticky="w")
 
-        # Add sound alert selection
+        
         ttk.Label(settings_grid, text="Sound Alert:").grid(row=6, column=0, padx=5, pady=5, sticky="w")
         sound_path_var = tk.StringVar(value=self.detector.play_sound_path)
-        sound_path_entry = ttk.Entry(settings_grid, textvariable=sound_path_var, width=40)
-        sound_path_entry.grid(row=6, column=1, padx=5, pady=5, sticky="w")
+        
+        sound_options = {
+            "AI-speech Mike": "./assets/AI-speech-Mike.mp3",
+            "AI speech Mike": "./assets/AI-speech-Mike.mp3",
+            "AI speech Cora": "./assets/AI-speech-Cora.mp3",
+            "Alarm Sound": "./assets/alert2.mp3",
+            "Notification 1": "./assets/softalert1.mp3",
+            "Notification 2": "./assets/softalert2.mp3",
+            "Notification 3": "./assets/softalert3.mp3",
+            "Notification 4": "./assets/softalert4.mp3",
+            "Announcement 1": "./assets/Attention1.mp3",
+            "Announcement 2": "./assets/Attention2.mp3"
 
-        def browse_sound_file():
-            file_path = filedialog.askopenfilename(filetypes=[("Audio Files", "*.mp3;*.wav")])
-            if file_path:
-                sound_path_var.set(file_path)
+        }
+        sound_path_dropdown = ttk.OptionMenu(settings_grid, sound_path_var, *sound_options.keys())
+        sound_path_dropdown.grid(row=6, column=1, padx=5, pady=5, sticky="w")
 
-        browse_button = ttk.Button(settings_grid, text="Browse", command=browse_sound_file)
-        browse_button.grid(row=6, column=2, padx=5, pady=5)
+        preview_button = ttk.Button(settings_grid, text="Preview", command=preview_sound)
+        preview_button.grid(row=6, column=1, padx=140, pady=5, sticky="w")
 
         save_button = ttk.Button(settings_grid, text="Save", command=save_settings)
         save_button.grid(row=7, column=0, columnspan=3, pady=10)
